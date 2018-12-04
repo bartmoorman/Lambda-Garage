@@ -84,7 +84,7 @@ class ActionIntentHandler(AbstractRequestHandler):
         # type: (HandlerInput) -> Response
         request = handler_input.request_envelope.request
         spayload={'func': 'getPosition', 'token': os.getenv('GARAGE_TOKEN'), 'device': 'sensor'}
-        sr = requests.post(os.getenv('GARAGE_HOST') + '/src/action.php', data=spayload)
+        sr = requests.post(os.getenv('GARAGE_HOST') + '/src/action.php', data=spayload, timeout=2.5)
 
         if sr.status_code == 200:
             sdata = sr.json()
@@ -94,7 +94,7 @@ class ActionIntentHandler(AbstractRequestHandler):
                     status = ACTIONS["status"][int(sdata["data"])]
                     if status != request.intent.slots["action"].value:
                         apayload={'func': 'doActivate', 'token': os.getenv('GARAGE_TOKEN'), 'device': 'opener'}
-                        ar = requests.post(os.getenv('GARAGE_HOST') + '/src/action.php', data=apayload)
+                        ar = requests.post(os.getenv('GARAGE_HOST') + '/src/action.php', data=apayload, timeout=2.5)
 
                         if ar.status_code == 200:
                             adata = ar.json()
@@ -128,7 +128,7 @@ class StatusIntentHandler(AbstractRequestHandler):
         # type: (HandlerInput) -> Response
         request = handler_input.request_envelope.request
         spayload={'func': 'getPosition', 'token': os.getenv('GARAGE_TOKEN'), 'device': 'sensor'}
-        sr = requests.post(os.getenv('GARAGE_HOST') + '/src/action.php', data=spayload)
+        sr = requests.post(os.getenv('GARAGE_HOST') + '/src/action.php', data=spayload, timeout=2.5)
 
         if sr.status_code == 200:
             sdata = sr.json()
