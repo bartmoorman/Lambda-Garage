@@ -83,7 +83,7 @@ class ActionIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         request = handler_input.request_envelope.request
-        spayload={'func': 'getPosition', 'key': os.getenv('GARAGE_KEY'), 'device': 'sensor'}
+        spayload={'func': 'getPosition', 'token': os.getenv('GARAGE_TOKEN'), 'device': 'sensor'}
         sr = requests.post(os.getenv('GARAGE_HOST') + '/src/action.php', data=spayload, timeout=2.5)
 
         if sr.status_code == 200:
@@ -93,7 +93,7 @@ class ActionIntentHandler(AbstractRequestHandler):
                 if int(sdata["data"]) == 0 or int(sdata["data"]) == 1:
                     status = ACTIONS["status"][int(sdata["data"])]
                     if status != request.intent.slots["action"].value:
-                        apayload={'func': 'doActivate', 'key': os.getenv('GARAGE_KEY'), 'device': 'opener'}
+                        apayload={'func': 'doActivate', 'token': os.getenv('GARAGE_TOKEN'), 'device': 'opener'}
                         ar = requests.post(os.getenv('GARAGE_HOST') + '/src/action.php', data=apayload, timeout=2.5)
 
                         if ar.status_code == 200:
@@ -127,7 +127,7 @@ class StatusIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         request = handler_input.request_envelope.request
-        spayload={'func': 'getPosition', 'key': os.getenv('GARAGE_KEY'), 'device': 'sensor'}
+        spayload={'func': 'getPosition', 'token': os.getenv('GARAGE_TOKEN'), 'device': 'sensor'}
         sr = requests.post(os.getenv('GARAGE_HOST') + '/src/action.php', data=spayload, timeout=2.5)
 
         if sr.status_code == 200:
